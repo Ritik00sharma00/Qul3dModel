@@ -59,7 +59,7 @@ export const getUserFiles = async (req, res) => {
 
 export const updateFileInteraction = async (req, res) => {
   try {
-    const { email, fileId } = req.params;
+    const { email, fileindex } = req.params;
     const { user_interaction } = req.body;
 
     const user = await User.findOne({ email });
@@ -68,7 +68,7 @@ export const updateFileInteraction = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const file = user.uploaded_files.find(f => f.id == fileId);
+    const file = user.uploaded_files[fileindex];
 
     if (!file) {
       return res.status(404).json({ message: 'File not found' });
