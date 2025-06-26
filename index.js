@@ -6,6 +6,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import userroutes from "./routes/user_routes.js";
 import filerouter from "./routes/file_route.js";
+import { authorize } from "./middlewares/authorization_middleare.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,8 +31,8 @@ app.get("/", (req, res) => {
 
 
 app.use("/api/v1/",userroutes)
-app.use("/api/v1/",filerouter);
-app.use('/assets', express.static('assets'));
+app.use("/api/v1/",authorize,filerouter);
+app.use('/assets',authorize, express.static('assets'));
 
 
 
