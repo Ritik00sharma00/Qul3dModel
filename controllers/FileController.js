@@ -8,6 +8,7 @@ export const handleFileUpload = async (req, res) => {
     const { email }  = req.params;
     const user = await User.findOne({ email });
     if (!user) {
+      console.log("email not fetched");
       return res.status(404).json({ message: 'User not found' });
     }
 
@@ -30,7 +31,7 @@ export const handleFileUpload = async (req, res) => {
 
   } catch (error) {
     console.error('Upload error:', error);
-    return res.status(500).json({ message: 'Server error during upload' });
+    return res.status(500).json({ message: JSON.stringify(err)+'Server error during upload' });
   }
 };
 
