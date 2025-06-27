@@ -2,19 +2,19 @@ import mongoose from "mongoose";
 
 const interaction_Schema = new mongoose.Schema({
     position: {
-        x: string,
-        y: string,
-        z: string,
+        x: String,
+        y: String,
+        z: String,
     },
     target: {
-        x: string,
-        y: string,
-        z: string,
+        x: String,
+        y: String,
+        z: String,
     },
-    zoom: string,
+    zoom: String,
     pan: {
-        x: string,
-        y: string,
+        x: String,
+        y: String,
     },
 }, { _id: false });
 
