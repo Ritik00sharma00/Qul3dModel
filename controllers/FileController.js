@@ -1,24 +1,39 @@
 import path from 'path';
 import User from '../models/User.js';
 
+
+
+
 export const handleFileUpload = async (req, res) => {
   try {
-    const {  userinteraction } = req.body;
+    const { userinteraction } = req.body;
     const file = req.file;
-    const { email }  = req.params;
+    const { email } = req.params;
+
     const user = await User.findOne({ email });
     if (!user) {
-      console.log("email not fetched");
+      console.log("Email not found");
       return res.status(404).json({ message: 'User not found' });
     }
 
     const filePath = `/assets/${email}/${file.filename}`;
 
+    let parsedInteraction = null;
+
+    if (userinteraction) {
+      try {
+        parsedInteraction = JSON.parse(userinteraction);
+      } catch (error) {
+        console.error("JSON parse error for userinteraction:", error);
+        return res.status(400).json({ message: 'Invalid JSON format for userinteraction' });
+      }
+    }
+
     const fileData = {
       filename: file.originalname,
       filetype: path.extname(file.originalname),
       filepath: filePath,
-      user_interaction: userinteraction ? req.body.userinteraction : null,  // Parse JSON string safely
+      user_interaction: parsedInteraction,  // ✅ Send parsed object here
     };
 
     user.uploaded_files.push(fileData);
@@ -31,9 +46,10 @@ export const handleFileUpload = async (req, res) => {
 
   } catch (error) {
     console.error('Upload error:', error);
-    return res.status(500).json({ message: JSON.stringify(error)+'Server error during upload' });
+    return res.status(500).json({ message: 'Server error during upload', error: error.message });
   }
 };
+
 
 
 
