@@ -91,16 +91,28 @@ export const updateFileInteraction = async (req, res) => {
       return res.status(404).json({ message: 'File not found' });
     }
 
-    file.user_interaction = user_interaction;
+    let parsedInteraction = null;
+    if (user_interaction) {
+      try {
+        parsedInteraction = JSON.parse(user_interaction);   // ✅ Parse safely
+      } catch (error) {
+        console.error('Invalid JSON in user_interaction:', error);
+        return res.status(400).json({ message: 'Invalid JSON format for user_interaction' });
+      }
+    }
+
+    file.user_interaction = parsedInteraction;
 
     await user.save();
 
     return res.status(200).json({ message: 'Interaction state updated successfully', file });
+
   } catch (error) {
     console.error('Error updating interaction:', error);
     return res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 
 
