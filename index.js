@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/",userroutes)
 app.use("/api/v1/",authorize,filerouter);
-app.use('/assets',authorize, express.static('assets'));
+app.use('/assets', express.static('assets'));
 
 
 
@@ -60,8 +60,4 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-const PORT2 =  5001;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT2}`);
-});
 
