@@ -51,7 +51,7 @@ import User from '../models/User.js';
 // };
 
 
-const handleFileUpload = async (req, res) => {
+export const handleFileUpload = async (req, res) => {
   try {
     const { userinteraction } = req.body;
     const file = req.file;
