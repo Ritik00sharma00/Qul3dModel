@@ -22,7 +22,6 @@ temp/
 Thumbs.db
 
 
-.vscode/
 .idea/
 *.suo
 *.ntvs*
@@ -34,11 +33,10 @@ logs/
 *.log
 
 
-.env
-.env.*
 
 
 coverage/
 
 
 *.tgz
+config.bat
