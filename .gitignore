@@ -34,11 +34,10 @@ logs/
 *.log
 
 
-.env
-.env.*
 
 
 coverage/
 
 
 *.tgz
+config.bat
