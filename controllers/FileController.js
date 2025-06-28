@@ -4,52 +4,100 @@ import User from '../models/User.js';
 
 
 
-export const handleFileUpload = async (req, res) => {
+// export const handleFileUpload = async (req, res) => {
+//   try {
+//     const { userinteraction } = req.body;
+//     const file = req.file;
+//     const { email } = req.params;
+
+//     const user = await User.findOne({ email });
+//     if (!user) {
+//       console.log("Email not found");
+//       return res.status(404).json({ message: 'User not found' });
+//     }
+
+//     const filePath = `/assets/${email}/${file.filename}`;
+
+//     let parsedInteraction = null;
+
+//     if (userinteraction) {
+//       try {
+//         parsedInteraction = JSON.parse(userinteraction);
+//       } catch (error) {
+//         console.error("JSON parse error for userinteraction:", error);
+//         return res.status(400).json({ message: 'Invalid JSON format for userinteraction' });
+//       }
+//     }
+
+//     const fileData = {
+//       filename: file.originalname,
+//       filetype: path.extname(file.originalname),
+//       filepath: filePath,
+//       user_interaction: parsedInteraction,  // ✅ Send parsed object here
+//     };
+
+//     user.uploaded_files.push(fileData);
+//     await user.save();
+
+//     return res.status(200).json({
+//       message: 'File uploaded and saved successfully',
+//       file: fileData,
+//     });
+
+//   } catch (error) {
+//     console.error('Upload error:', error);
+//     return res.status(500).json({ message: 'Server error during upload', error: error.message });
+//   }
+// };
+
+
+const handleFileUpload = async (req, res) => {
   try {
     const { userinteraction } = req.body;
     const file = req.file;
     const { email } = req.params;
 
+    if (!file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
     const user = await User.findOne({ email });
     if (!user) {
       console.log("Email not found");
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const filePath = `/assets/${email}/${file.filename}`;
 
     let parsedInteraction = null;
-
     if (userinteraction) {
       try {
         parsedInteraction = JSON.parse(userinteraction);
       } catch (error) {
         console.error("JSON parse error for userinteraction:", error);
-        return res.status(400).json({ message: 'Invalid JSON format for userinteraction' });
+        return res.status(400).json({ message: "Invalid JSON format for userinteraction" });
       }
     }
 
     const fileData = {
       filename: file.originalname,
-      filetype: path.extname(file.originalname),
+      filetype: path.extname(file.originalname).toLowerCase(),
       filepath: filePath,
-      user_interaction: parsedInteraction,  // ✅ Send parsed object here
+      user_interaction: parsedInteraction,
     };
 
     user.uploaded_files.push(fileData);
     await user.save();
 
     return res.status(200).json({
-      message: 'File uploaded and saved successfully',
+      message: "File uploaded and saved successfully",
       file: fileData,
     });
-
   } catch (error) {
-    console.error('Upload error:', error);
-    return res.status(500).json({ message: 'Server error during upload', error: error.message });
+    console.error("Upload error:", error);
+    return res.status(500).json({ message: "Server error during upload", error: error.message });
   }
 };
-
 
 
 
